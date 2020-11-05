@@ -11,7 +11,7 @@ const DashboardRouter = () => {
   return (
     <>
       <Navbar />
-      <div>
+      <div className="container mt-2">
         <Switch>
           <Route exact path="/marvel" component={ MarvelScreeen } />
           <Route exact path="/dc" component={ DcScreen } />

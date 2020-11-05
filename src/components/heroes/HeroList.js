@@ -1,18 +1,17 @@
 import React from 'react';
 import { getHerosByPublisher } from './../../selectors/getHeros';
+import { HeroCard } from './HeroCard';
 
 export const HeroList = ({ publisher }) => {
   const heroes = getHerosByPublisher(publisher);
   
   return (
-    <ul>
+    <div className="card-columns">
       {
-        heroes.map(hero => (
-          <li key={hero.id}>
-            { hero.superhero }
-          </li>
+        heroes.map(heroe => (
+          <HeroCard key={heroe.id} {...heroe}/>
         ))
       }
-    </ul>
+    </div>
   );
 }
