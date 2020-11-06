@@ -14,3 +14,7 @@ export const getHerosByPublisher = ( publisher ) => {
 export const getHeroById = (heroId) => {
   return heroes.find(hero => hero.id === heroId);
 }
+
+export const getHerosBySuperHero = superhero => {
+  return heroes.filter(hero => hero.superhero.toUpperCase() === superhero.toUpperCase());
+}
