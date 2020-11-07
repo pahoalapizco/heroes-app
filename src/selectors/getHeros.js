@@ -16,5 +16,7 @@ export const getHeroById = (heroId) => {
 }
 
 export const getHerosBySuperHero = superhero => {
-  return heroes.filter(hero => hero.superhero.toUpperCase() === superhero.toUpperCase());
+  if (superhero === '') return [];
+  superhero = superhero.toUpperCase();
+  return heroes.filter(hero => hero.superhero.toUpperCase().includes(superhero));
 }

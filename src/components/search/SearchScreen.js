@@ -1,18 +1,29 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import queryString from 'query-string';
 import { HeroCard } from '../heroes/HeroCard';
 import { useForm } from './../../hooks/useForm';
-import { heroes } from './../../data/heroes';
+import { useLocation } from 'react-router-dom';
+import { getHerosBySuperHero } from './../../selectors/getHeros';
 
-export const SearchScreen = () => {
-  const heroesFiltered = heroes;
-  const [formValues, setFormValues, reset] = useForm({
-    searchText: ''
+export const SearchScreen = ({ history }) => {
+  const location = useLocation();  
+  // q = Query o bien el nombdre el super heroe que estamos buscando.
+  const { q } = queryString.parse(location.search);
+  
+  const superHeroQuery = !q ? '' : q;
+
+  const [formValues, setFormValues] = useForm({
+    searchText: superHeroQuery
   });
   const { searchText } = formValues;
+  
+  // Recuerda el valor de q, para que la función no se este disparando 
+  // cuando cambia el Input
+  const heroesFiltered = useMemo(() =>  getHerosBySuperHero(superHeroQuery), [superHeroQuery]);
 
   const handleSubmit = e => {
     e.preventDefault();
-    console.log("SearchScreen -> heroesFiltered", heroesFiltered)
+    history.push(`?q=${searchText}`);
   }
   return (
     <div>
@@ -44,6 +55,21 @@ export const SearchScreen = () => {
         <div className="col-7">
             <h4> Resultados </h4>
             <hr />
+
+            {
+              (superHeroQuery === '')
+                && <div className="alert alert-info">
+                    Busca a un super heroe...!
+                  </div>
+            }
+
+            {
+              (superHeroQuery !== '' && heroesFiltered.length  === 0)
+                && <div className="alert alert-warning">
+                    Lo sentimos, no encontramos a { superHeroQuery } :(
+                  </div>
+            }
+
             {
                 heroesFiltered.map(hero => (
                   <HeroCard key={hero.id} {...hero} />
