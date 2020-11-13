@@ -11,8 +11,6 @@ import { AuthContext } from './../auth/AuthContext';
 const AppRouter = () => {
   const { user: { logged } } = useContext(AuthContext);
   
-  console.log("AppRouter -> logged", logged)
-  
   return (
     <Router>
       <div>
